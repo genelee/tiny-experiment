@@ -3,10 +3,20 @@ A lightweight javascript module to run a/b tests on angular. Primarily made to a
 
 Dependencies:
 'angular',
+
 'angular-cookies',
+
 'angular-cookie'
 
-Use it like this in your JS
+To-do list:
+Allow different options to track experiment results (currently done with segment)
+
+Remove dependencies on 'ipCookie'
+
+Allow traffic allocation by percentage
+
+
+Use it like this in your JS:
 
 
 First, register the experiment
