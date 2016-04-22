@@ -8,6 +8,7 @@ Dependencies:
 
 Use it like this in your JS
 
+```
 angular.module('foo').run(['$experiment', function($experiment) {
   $experiment.setExperiment('myExperiment', { //used to reference within your code
     active: true, 
@@ -40,9 +41,11 @@ angular.module('foo')
     })
   })
 }])
+```
 
 Or in the template with the pb-experiment directive:
 
+```
 <div pb-experiment key="myExperiment" variant="variantA" default-variant="true">
   THIS IS VARIANT A
 </div>
@@ -50,5 +53,6 @@ Or in the template with the pb-experiment directive:
 <div pb-experiment key="myExperiment" variant="variantB">
   THIS IS VARIANT B
 </div>
+```
 
 If no active experiment is found with these parameters, defaultVariant = true will prevent element from being hidden
