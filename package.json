@@ -1,0 +1,26 @@
+{
+  "name": "tiny-experiment",
+  "version": "1.0.0",
+  "description": "Lightweight javascript module to run AB tests",
+  "main": "tiny-experiment.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/genelee/tiny-experiment.git"
+  },
+  "keywords": [
+    "AB",
+    "test",
+    "experiment",
+    "optimizely",
+    "interface"
+  ],
+  "author": "Gene Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/genelee/tiny-experiment/issues"
+  },
+  "homepage": "https://github.com/genelee/tiny-experiment"
+}
