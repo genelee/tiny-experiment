@@ -32,7 +32,7 @@ export default class TinyExperiment {
     if (typeof this.variantInt == 'number' && validArray) {
       this.variantName = this.variantNames[this.variantInt];
     } else {
-      throw TypeError("Experiment failed to setup due to improperly typed experiment meta data");
+      throw TypeError("Tiny experiment: failed to setup experiment (" + this.experimentKey + ") due to improperly typed experiment meta data");
       return false;
     }
 
@@ -45,7 +45,6 @@ export default class TinyExperiment {
       }
     }
 
-    if (typeof args.completionHandler != 'function') this.completionHandler = this.defaultCompletionHandler;
     this.completion.then(() => {
       this.variantHandlers[this.variantName]();
 
@@ -93,9 +92,5 @@ export default class TinyExperiment {
   end() {
     this.active = false;
     this._cancelExperiment();
-  }
-
-  defaultCompletionHandler(params: {}) {
-    window.analytics.track('Experiment Viewed', params);
   }
 }
