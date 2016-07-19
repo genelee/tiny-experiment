@@ -31,5 +31,8 @@
     "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1"
+  },
+  "dependencies": {
+    "promise-polyfill": "^5.2.1"
   }
 }

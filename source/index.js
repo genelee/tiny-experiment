@@ -1,4 +1,5 @@
 import TinyExperiment from './tinyExperiment';
+import 'promise-polyfill';
 
 class TinyExperimentManager {
 
