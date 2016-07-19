@@ -51,7 +51,7 @@ class TinyExperimentManager {
     this._resolveExperimentRegistration();
   }
 
-  getExperiment(experimentKey: string) {
+  getExperiment(experimentKey = String()) {
     return this.experiments.filter((e) => { return experimentKey == e.experimentKey })[0];
   }
 
