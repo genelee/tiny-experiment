@@ -72,7 +72,7 @@ On experiment conclusion, a segment analytics call is made with event name 'Expe
 
 ```
 import tinyManager from 'tiny-experiment';
-tinyManger.init({
+tinyManager.init({
   experiments: [ ...experiments... ],
   globalCompletionHandler: function(params) {
     // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames
