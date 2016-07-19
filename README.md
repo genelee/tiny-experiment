@@ -42,7 +42,7 @@ tinyManager.init({
 })
 ```
 
-4a) Then, register handlers for variants and 'run' the TinyExperiment
+4a) Then run an experiment with variant-specific handlers
 ```
 var experiment = tinyManager.getExperiment('homepageButtonStyle')
 
