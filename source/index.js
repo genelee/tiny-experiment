@@ -5,7 +5,7 @@ class TinyExperimentManager {
   static get defaultCompletionHandler() {
     return function(params) {
       window.analytics.ready(() => {
-        ('Experiment Viewed', params);
+        window.analytics.track('Experiment Viewed', params);
       });
     }
   }
@@ -67,7 +67,6 @@ class TinyExperimentManager {
       param = expName;
     }
     if (key && param) {
-      console.log('manual experiment', key, expInt, expName);
       this.experimentRegistrationPromise.then(function (key, expInt, expName) {
         if (!this.getExperiment(key)) {
           throw ReferenceError('Tiny experiment: Tried to manually run experiment (' + key + ') that is not registered.')
