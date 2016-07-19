@@ -32,8 +32,8 @@ tinyManager.init({
       experimentKey(required): 'homepageButtonStyle', // unique key
       experimentName(required): 'Homepage button style', // descriptive name for analytics
       variantNames(required): ['blue', 'red'],
-      cached(optional): Boolean // default false, user will see same variant next time
-      cachePeriod(optional): Number // default 7, user will see same variant for X days
+      cached(optional): Boolean // default false, if true user will see same variant next time
+      cachePeriod(optional): Number // default 7, if cached user will see same variant for X days
     },
     {
       // experiment two
