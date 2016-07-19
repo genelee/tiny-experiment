@@ -1,4 +1,4 @@
-import TinyExperiment from 'tinyExperiment';
+import TinyExperiment from './tinyExperiment';
 
 class TinyExperimentManager {
 
