@@ -1,64 +1,92 @@
 # tiny-experiment
 
-A tiny javascript module to run a/b tests in javascript applications.
+A lightweight utility to run split tests in your javascript application.
 
 To-do list:
 Allow traffic allocation by percentage
 
 
-Use it like this in your JS:
+# Quick start
 
-
-First, register the experiment
+1) Install
+```
+npm install tiny-experiment --save
 ```
 
-import TinyExperiment from 'tiny-experiment';
+2) Require module
+```
+import tinyManager from 'tiny-experiment';
+window.tinyManager = tinyManager;
 
-TinyExperiment.setExperiment('redBlueButton', {
-  active: true, 
-  //dynamically switch off to prevent experiment from running
-  
-  experimentName: 'My experiment',
-  //a descriptive name for your experiment
-  
-  variantNames: ['variantA', 'variantB', 'variantC'], 
-  //randomly chooses one
-  
-  cached: true 
-  //sets cookie for experiment key and variant for recurring visits to experiment
+// or es5
+
+window.tinyManager = require('tiny-experiment').default;
+
+```
+
+3) Register experiments once
+```
+tinyManager.init({
+  experiments: [
+    {
+      experimentKey: 'homepageButtonStyle', // unique key (required)
+      experimentName: 'Homepage button style', // descriptive name for analytics (required)
+      variantNames: ['blue', 'red'], // (required)
+      cached: Boolean // (optional) default false
+    },
+    {
+      // experiment two
+    }
+  ]
 })
 ```
 
-Then, register handlers for variants before or after running the Experiment object method 'run'
+4a) Then, register handlers for variants and 'run' the TinyExperiment
 ```
-var experiment = $experiment.getExperiment('myExperiment')
+var experiment = tinyManager.getExperiment('homepageButtonStyle')
 
 experiment
-.on('variantA', function() {
-  // do something
+.on('blue', function() {
+  // make button blue
 })
-.on('variantB', function() {
-  // do something else
+.on('red', function() {
+  // make button red
 })
 .run()
+```
 
-$scope.$on('SOME_ASYNC_EVENT', function() {
-  experiment.on('variantC', function() {
-    // if this variant is selected, handler will be executed even after experiment has been 'run'
-  })
+4b) You can 'run' the experiment asynchronously
+```
+experiment
+.on('blue', function() { ... })
+
+someAsyncFunction(function() {
+  experiment.run()
 })
 ```
 
-Or in the template with the pb-experiment directive:
+# Customize completion handling
+
+On experiment conclusion, a segment analytics call is made with event name 'Experiment Viewed', and the properties: experimentName, variantName, variantInt, and variantNames. To customize the default:
 
 ```
-<div pb-experiment key="myExperiment" variant="variantA" default-variant="true">
-  THIS IS VARIANT A
-</div>
-
-<div pb-experiment key="myExperiment" variant="variantB">
-  THIS IS VARIANT B
-</div>
+import tinyManager from 'tiny-experiment';
+tinyManger.init({
+  experiments: [ ...experiments... ],
+  globalCompletionHandler: function(params) {
+    // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames
+  }
+})
 ```
 
-If no active experiment is found with these parameters, defaultVariant = true will prevent element from being hidden
+# Manual variant setting
+
+```
+http://domain.com/?experimentKey=homepageButtonStyle&variantName=blue
+```
+
+This will run the experiment with experimentKey = homepageButtonStyle, and manually set the variant as 'blue'
+
+# Angular 
+
+a directive that let's you hide/show elements without writing any javascript: https://github.com/genelee/angular-experiment
