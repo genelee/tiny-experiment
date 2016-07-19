@@ -29,10 +29,11 @@ window.tinyManager = require('tiny-experiment').default;
 tinyManager.init({
   experiments: [
     {
-      experimentKey: 'homepageButtonStyle', // unique key (required)
-      experimentName: 'Homepage button style', // descriptive name for analytics (required)
-      variantNames: ['blue', 'red'], // (required)
-      cached: Boolean // (optional) default false
+      experimentKey(required): 'homepageButtonStyle', // unique key
+      experimentName(required): 'Homepage button style', // descriptive name for analytics
+      variantNames(required): ['blue', 'red'],
+      cached(optional): Boolean // default false, if true user will see same variant next time
+      cachePeriod(optional): Number // default 7, if cached user will see same variant for X days
     },
     {
       // experiment two
@@ -71,7 +72,7 @@ On experiment conclusion, a segment analytics call is made with event name 'Expe
 
 ```
 import tinyManager from 'tiny-experiment';
-tinyManger.init({
+tinyManager.init({
   experiments: [ ...experiments... ],
   globalCompletionHandler: function(params) {
     // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames
