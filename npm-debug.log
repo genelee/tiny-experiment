@@ -19,26 +19,26 @@
 7 verbose parsed url   href: '.' }
 8 silly lockFile 3a52ce78- .
 9 verbose lock . /Users/jaelee/.npm/3a52ce78-.lock
-10 verbose tar pack [ '/Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz', '.' ]
-11 verbose tarball /Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz
+10 verbose tar pack [ '/Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz', '.' ]
+11 verbose tarball /Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz
 12 verbose folder .
-13 info prepublish tiny-experiment@1.0.0
+13 info prepublish tiny-experiment@1.0.21
 14 silly lockFile 1f1177db-tar tar://.
 15 verbose lock tar://. /Users/jaelee/.npm/1f1177db-tar.lock
-16 silly lockFile 558bc029-iny-experiment-1-0-0-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz
-17 verbose lock tar:///Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz /Users/jaelee/.npm/558bc029-iny-experiment-1-0-0-package-tgz.lock
+16 silly lockFile 0afc82fd-ny-experiment-1-0-21-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz
+17 verbose lock tar:///Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz /Users/jaelee/.npm/0afc82fd-ny-experiment-1-0-21-package-tgz.lock
 18 silly lockFile 1f1177db-tar tar://.
 19 silly lockFile 1f1177db-tar tar://.
-20 silly lockFile 558bc029-iny-experiment-1-0-0-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz
-21 silly lockFile 558bc029-iny-experiment-1-0-0-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.0/package.tgz
-22 silly lockFile 80b99701-pm-tiny-experiment-1-0-0-package /Users/jaelee/.npm/tiny-experiment/1.0.0/package
-23 verbose lock /Users/jaelee/.npm/tiny-experiment/1.0.0/package /Users/jaelee/.npm/80b99701-pm-tiny-experiment-1-0-0-package.lock
-24 silly lockFile 80b99701-pm-tiny-experiment-1-0-0-package /Users/jaelee/.npm/tiny-experiment/1.0.0/package
-25 silly lockFile 80b99701-pm-tiny-experiment-1-0-0-package /Users/jaelee/.npm/tiny-experiment/1.0.0/package
+20 silly lockFile 0afc82fd-ny-experiment-1-0-21-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz
+21 silly lockFile 0afc82fd-ny-experiment-1-0-21-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.21/package.tgz
+22 silly lockFile 8d574cf4-m-tiny-experiment-1-0-21-package /Users/jaelee/.npm/tiny-experiment/1.0.21/package
+23 verbose lock /Users/jaelee/.npm/tiny-experiment/1.0.21/package /Users/jaelee/.npm/8d574cf4-m-tiny-experiment-1-0-21-package.lock
+24 silly lockFile 8d574cf4-m-tiny-experiment-1-0-21-package /Users/jaelee/.npm/tiny-experiment/1.0.21/package
+25 silly lockFile 8d574cf4-m-tiny-experiment-1-0-21-package /Users/jaelee/.npm/tiny-experiment/1.0.21/package
 26 silly lockFile 3a52ce78- .
 27 silly lockFile 3a52ce78- .
 28 silly publish { name: 'tiny-experiment',
-28 silly publish   version: '1.0.0',
+28 silly publish   version: '1.0.21',
 28 silly publish   description: 'Lightweight javascript module to run AB tests',
 28 silly publish   main: 'index.js',
 28 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
@@ -50,36 +50,41 @@
 28 silly publish   license: 'ISC',
 28 silly publish   bugs: { url: 'https://github.com/genelee/tiny-experiment/issues' },
 28 silly publish   homepage: 'https://github.com/genelee/tiny-experiment',
+28 silly publish   devDependencies:
+28 silly publish    { 'babel-preset-es2015': '^6.9.0',
+28 silly publish      'babel-preset-react': '^6.11.1',
+28 silly publish      babelify: '^7.3.0',
+28 silly publish      browserify: '^13.0.1' },
 28 silly publish   readme: '# tiny-experiment\n\nA tiny javascript module to run a/b tests in javascript applications.\n\nTo-do list:\nAllow traffic allocation by percentage\n\n\nUse it like this in your JS:\n\n\nFirst, register the experiment\n```\n\nimport TinyExperiment from \'tiny-experiment\';\n\nTinyExperiment.setExperiment(\'redBlueButton\', {\n  active: true, \n  //dynamically switch off to prevent experiment from running\n  \n  experimentName: \'My experiment\',\n  //a descriptive name for your experiment\n  \n  variantNames: [\'variantA\', \'variantB\', \'variantC\'], \n  //randomly chooses one\n  \n  cached: true \n  //sets cookie for experiment key and variant for recurring visits to experiment\n})\n```\n\nThen, register handlers for variants before or after running the Experiment object method \'run\'\n```\nvar experiment = $experiment.getExperiment(\'myExperiment\')\n\nexperiment\n.on(\'variantA\', function() {\n  // do something\n})\n.on(\'variantB\', function() {\n  // do something else\n})\n.run()\n\n$scope.$on(\'SOME_ASYNC_EVENT\', function() {\n  experiment.on(\'variantC\', function() {\n    // if this variant is selected, handler will be executed even after experiment has been \'run\'\n  })\n})\n```\n\nOr in the template with the pb-experiment directive:\n\n```\n<div pb-experiment key="myExperiment" variant="variantA" default-variant="true">\n  THIS IS VARIANT A\n</div>\n\n<div pb-experiment key="myExperiment" variant="variantB">\n  THIS IS VARIANT B\n</div>\n```\n\nIf no active experiment is found with these parameters, defaultVariant = true will prevent element from being hidden',
 28 silly publish   readmeFilename: 'README.md',
-28 silly publish   gitHead: '15b32989119f26bf3ee93fa0ed31542b7cc6d51d',
-28 silly publish   _id: 'tiny-experiment@1.0.0',
-28 silly publish   _shasum: 'db1aff95a604d1b6156e1f938ce6dbe2ed0d7ba0',
+28 silly publish   gitHead: 'c2375d9f2f7e096d82b19d1ab51bb02c65a0481b',
+28 silly publish   _id: 'tiny-experiment@1.0.21',
+28 silly publish   _shasum: 'a2958eb19313a9bf330011446423b489a86a8971',
 28 silly publish   _from: '.' }
 29 verbose request where is /tiny-experiment
 30 verbose request registry https://registry.npmjs.org/
-31 verbose request id da4476cab8eead3c
+31 verbose request id 606be1aba5335e08
 32 verbose url raw /tiny-experiment
 33 verbose url resolving [ 'https://registry.npmjs.org/', './tiny-experiment' ]
 34 verbose url resolved https://registry.npmjs.org/tiny-experiment
 35 verbose request where is https://registry.npmjs.org/tiny-experiment
-36 info trying registry request attempt 1 at 18:20:34
+36 info trying registry request attempt 1 at 16:51:53
 37 http PUT https://registry.npmjs.org/tiny-experiment
 38 http 403 https://registry.npmjs.org/tiny-experiment
 39 verbose headers { 'content-type': 'application/json',
 39 verbose headers   'cache-control': 'max-age=300',
-39 verbose headers   'content-length': '95',
+39 verbose headers   'content-length': '96',
 39 verbose headers   'accept-ranges': 'bytes',
-39 verbose headers   date: 'Mon, 18 Jul 2016 22:20:35 GMT',
+39 verbose headers   date: 'Tue, 19 Jul 2016 20:51:54 GMT',
 39 verbose headers   via: '1.1 varnish',
 39 verbose headers   connection: 'keep-alive',
-39 verbose headers   'x-served-by': 'cache-iad2620-IAD',
+39 verbose headers   'x-served-by': 'cache-iad2138-IAD',
 39 verbose headers   'x-cache': 'MISS',
 39 verbose headers   'x-cache-hits': '0',
-39 verbose headers   'x-timer': 'S1468880434.435314,VS0,VE945',
+39 verbose headers   'x-timer': 'S1468961513.820303,VS0,VE951',
 39 verbose headers   vary: 'Accept-Encoding' }
 40 error publish Failed PUT 403
-41 error Error: "You cannot publish over the previously published version 1.0.0." : tiny-experiment
+41 error Error: "You cannot publish over the previously published version 1.0.21." : tiny-experiment
 41 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
 41 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
 41 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:236:22)
