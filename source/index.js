@@ -83,4 +83,5 @@ function getURLParameter(param) {
     .exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
 
-export default new TinyExperimentManager()
+window.tinyManager = new TinyExperimentManager()
+export default window.tinyManager
