@@ -1,6 +1,6 @@
-export default class TinyExperimentCookieInterface() {
+export default class TinyExperimentCookieInterface {
   constructor() {
-    this.namespace = "tinyExperiment_";
+    this.namespace = "tiny-e_";
   }
 
   getVariant(key: string) {

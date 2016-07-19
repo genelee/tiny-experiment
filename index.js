@@ -3,7 +3,7 @@ import TinyExperiment from './tinyExperiment';
 class TinyExperimentManager {
 
   static get defaultCompletionHandler() {
-    return function() {
+    return function(params) {
       window.analytics.ready(() => {
         ('Experiment Viewed', params);
       });
@@ -17,10 +17,10 @@ class TinyExperimentManager {
       this._resolveExperimentRegistration = _resolve;
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+    document.addEventListener('DOMContentLoaded', function handler() {
+      document.removeEventListener('DOMContentLoaded', handler.bind(this), false);
       this.parseURLForManualExperimentation();
-    }, false);
+    }.bind(this), false);
   }
 
   init(args) {
@@ -39,8 +39,13 @@ class TinyExperimentManager {
   }
 
   setExperiments(experiments: []) {
-    this.experiments = experiments.filter((e) => {
-      return e.active
+    this.experiments = experiments.map((e) => {
+      if (e.active) {
+        if (!e.completionHandler) {
+          e.completionHandler = TinyExperimentManager.defaultCompletionHandler;
+        }
+        return new TinyExperiment(e);
+      }
     });
 
     this._resolveExperimentRegistration();
@@ -48,10 +53,6 @@ class TinyExperimentManager {
 
   getExperiment(experimentKey: string) {
     return this.experiments.filter((e) => { return experimentKey == e.experimentKey })[0];
-  }
-
-  setGlobalExperimentCompletionHandler(handler: () => {}) {
-    this.globalExperimentCompletionHandler = handler;
   }
 
   parseURLForManualExperimentation() {
@@ -65,8 +66,9 @@ class TinyExperimentManager {
     } else {
       param = expName;
     }
-    if (key && expInt && expName) {
-      this.experimentRegistrationPromise.then((key, expInt, expName) => {
+    if (key && param) {
+      console.log('manual experiment', key, expInt, expName);
+      this.experimentRegistrationPromise.then(function (key, expInt, expName) {
         if (!this.getExperiment(key)) {
           throw ReferenceError('Tiny experiment: Tried to manually run experiment (' + key + ') that is not registered.')
         }

@@ -5,10 +5,11 @@ export default class TinyExperiment {
     this.active = args.active;
     this.cached = args.cached || false;
     this.cachePeriod = args.cachePeriod || 7;
+    this.completionHandler = args.completionHandler;
     this.experimentKey = args.experimentKey;
     this.experimentName = args.experimentName;
     this.tracked = false;
-    this.variantInt = getRandomVariant(args.variantNames.length);
+    this.variantInt = this.getRandomVariant(args.variantNames.length);
     this.variantNames = args.variantNames;
     this.variantHandlers = {};
 
@@ -46,10 +47,10 @@ export default class TinyExperiment {
     }
 
     this.completion.then(() => {
-      this.variantHandlers[this.variantName]();
-
+      if (typeof this.variantHandlers[this.variantName] == 'function') {
+        this.variantHandlers[this.variantName]();
+      }
       this.tracked = true;
-
       this.completionHandler.call(this, {
         experimentName: this.experimentName,
         variantInt: this.variantInt,
