@@ -2,7 +2,6 @@ import TinyExperimentCookieInterface from './tinyExperimentCookieInterface';
 
 export default class TinyExperiment {
   constructor(args = {}) {
-    this.active = args.active;
     this.cached = args.cached || false;
     this.cachePeriod = args.cachePeriod || 7;
     this.completionHandler = args.completionHandler;
@@ -70,18 +69,16 @@ export default class TinyExperiment {
 
     if (typeof arguments[0] == "number") {
       const variantInt = arguments[0];
-      this.active = true;
       this.variantInt = variantInt;
       this.variantName = this.variantNames[variantInt];
     }
     else if (typeof arguments[0] == "string") {
       const variantName = arguments[0];
-      this.active = true;
       this.variantName = variantName;
       this.variantInt = this.variantNames.indexOf(variantName);
     }
 
-    if (this.active && !this.tracked) {
+    if (!this.tracked) {
       this._executeExperiment(this);
     } else {
       this._cancelExperiment();
@@ -91,7 +88,6 @@ export default class TinyExperiment {
   }
 
   end() {
-    this.active = false;
     this._cancelExperiment();
   }
 }

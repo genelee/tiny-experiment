@@ -41,12 +41,10 @@ class TinyExperimentManager {
 
   setExperiments(experiments = []) {
     this.experiments = experiments.map((e) => {
-      if (e.active) {
-        if (!e.completionHandler) {
-          e.completionHandler = TinyExperimentManager.defaultCompletionHandler;
-        }
-        return new TinyExperiment(e);
+      if (!e.completionHandler) {
+        e.completionHandler = TinyExperimentManager.defaultCompletionHandler;
       }
+      return new TinyExperiment(e);
     });
 
     this._resolveExperimentRegistration();
