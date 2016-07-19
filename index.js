@@ -2,10 +2,12 @@ import TinyExperiment from './tinyExperiment';
 
 class TinyExperimentManager {
 
-  static defaultCompletionHandler() {
-    window.analytics.ready(() => {
-      ('Experiment Viewed', params);
-    });
+  static get defaultCompletionHandler() {
+    return function() {
+      window.analytics.ready(() => {
+        ('Experiment Viewed', params);
+      });
+    }
   }
 
   constructor() {
