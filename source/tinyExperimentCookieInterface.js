@@ -3,16 +3,16 @@ export default class TinyExperimentCookieInterface {
     this.namespace = "tiny-e_";
   }
 
-  getVariant(key: string) {
+  getVariant(key = String()) {
     return this._getCookie(this.namespace + key);
   }
 
-  setVariant(key: string, variant: string, expiry: number) {
+  setVariant(key = String(), variant = String(), expiry = Number()) {
     this._setCookie(this.namespace + key, variant, expiry)
     return true;
   }
 
-  _getCookie(cname: string) {
+  _getCookie(cname = String()) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for(var i = 0; i <ca.length; i++) {
@@ -27,7 +27,7 @@ export default class TinyExperimentCookieInterface {
     return "";
   }
 
-  _setCookie(cname: string, cvalue: string, exdays: number) {
+  _setCookie(cname = String(), cvalue = String(), exdays = Number()) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+ d.toUTCString();

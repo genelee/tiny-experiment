@@ -1,7 +1,7 @@
 import TinyExperimentCookieInterface from './tinyExperimentCookieInterface';
 
 export default class TinyExperiment {
-  constructor(args: {}) {
+  constructor(args = {}) {
     this.active = args.active;
     this.cached = args.cached || false;
     this.cachePeriod = args.cachePeriod || 7;
@@ -60,7 +60,7 @@ export default class TinyExperiment {
     });
   }
 
-  on(variantName: string, handler: () => {}) {
+  on(variantName = String(), handler = () => {}) {
     this.variantHandlers[variantName] = handler;
     return this; // to chain .on(func).on(func).run()
   }

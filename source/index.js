@@ -38,7 +38,7 @@ class TinyExperimentManager {
     }
   }
 
-  setExperiments(experiments: []) {
+  setExperiments(experiments = []) {
     this.experiments = experiments.map((e) => {
       if (e.active) {
         if (!e.completionHandler) {

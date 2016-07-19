@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/jaelee/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/Users/jaelee/.npm/tiny-experiment/1.0.4/package.tgz', '.' ]
+11 verbose tarball /Users/jaelee/.npm/tiny-experiment/1.0.4/package.tgz
+12 verbose folder .
+13 info prepublish tiny-experiment@1.0.4
+14 verbose unsafe-perm in lifecycle true
+15 info tiny-experiment@1.0.4 Failed to exec prepublish script
+16 error addLocalDirectory Could not pack "." to "/Users/jaelee/.npm/tiny-experiment/1.0.4/package.tgz"
+17 silly lockFile 3a52ce78- .
+18 silly lockFile 3a52ce78- .
+19 error addLocal Could not install .
+20 error tiny-experiment@1.0.4 prepublish: `npm run build`
+20 error Exit status 1
+21 error Failed at the tiny-experiment@1.0.4 prepublish script.
+21 error This is most likely a problem with the tiny-experiment package,
+21 error not with npm itself.
+21 error Tell the author that this fails on your system:
+21 error     npm run build
+21 error You can get their info via:
+21 error     npm owner ls tiny-experiment
+21 error There is likely additional logging output above.
+22 error System Darwin 15.0.0
+23 error command "node" "/usr/local/bin/npm" "publish"
+24 error cwd /Users/jaelee/Projects/tiny-experiment
+25 error node -v v0.10.35
+26 error npm -v 1.4.28
+27 error code ELIFECYCLE
+28 verbose exit [ 1, true ]
