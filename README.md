@@ -66,9 +66,11 @@ someAsyncFunction(function() {
 })
 ```
 
-# Customize completion handling
+# When an experiment is run
 
-On experiment conclusion, a segment analytics call is made with event name 'Experiment Viewed', and the properties: experimentName, variantName, variantInt, and variantNames. To customize the default:
+A segment analytics call is made with event name 'Experiment Viewed', and the properties: experimentName, variantName, variantInt, and variantNames. Make your funnel with 'Experiment Viewed' (experimentName, variantName) as the start point and any other segment event as the endpoint. 
+
+To customize the default behavior when an experiment is run:
 
 ```
 import tinyManager from 'tiny-experiment';
