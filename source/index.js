@@ -28,9 +28,9 @@ class TinyExperimentManager {
     }.bind(this), false);
   }
 
-  init(args) {
+  setup(args) {
     if (!args.experiments) {
-      throw new Error('Tiny experiment init() requires experiments as an array')
+      throw new Error('Tiny experiment setup requires experiments as an array')
     }
 
     this.setExperiments(args.experiments);
@@ -41,6 +41,10 @@ class TinyExperimentManager {
       }
       this.globalExperimentCompletionHandler = args.globalExperimentCompletionHandler
     }
+  }
+
+  init(args) {
+    return this.setup(args);
   }
 
   setExperiments(experiments = []) {
