@@ -6,7 +6,7 @@ class TinyExperimentManager {
   static get defaultCompletionHandler() {
     return function(params) {
       if (!window.analytics || !window.analytics.track) {
-        throw new Error('Tiny by default uses the segment library to populate experiment results data. To customize, pass in a function value to key globalExperimentCompletionHandler in the init() method');
+        throw new Error('Tiny by default uses the segment library to populate experiment results data. To customize, pass in a function value to key globalExperimentCompletionHandler in the setup() method');
       }
 
       window.analytics.ready(() => {

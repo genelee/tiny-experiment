@@ -26,7 +26,7 @@ window.tinyManager = require('tiny-experiment').default;
 
 3) Register experiments once
 ```
-tinyManager.init({
+tinyManager.setup({
   experiments: [
     {
       experimentKey(required): 'homepageButtonStyle', // unique key
