@@ -1,6 +1,6 @@
 {
   "name": "tiny-experiment",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "Lightweight javascript module to run AB tests",
   "main": "./distribution/index.js",
   "scripts": {
@@ -14,10 +14,10 @@
   },
   "keywords": [
     "AB",
+    "split",
     "test",
     "experiment",
-    "optimizely",
-    "interface"
+    "optimizely"
   ],
   "author": "Gene Lee",
   "license": "ISC",
