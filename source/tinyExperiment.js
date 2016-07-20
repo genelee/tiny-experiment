@@ -32,7 +32,7 @@ export default class TinyExperiment {
     if (typeof this.variantInt == 'number' && validArray) {
       this.variantName = this.variantNames[this.variantInt];
     } else {
-      throw TypeError("Tiny experiment: failed to setup experiment (" + this.experimentKey + ") due to improperly typed experiment meta data");
+      throw new TypeError("Failed to setup experiment (" + this.experimentKey + ") due to improperly typed experiment meta data");
       return false;
     }
 

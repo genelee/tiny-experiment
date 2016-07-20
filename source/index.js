@@ -5,6 +5,10 @@ class TinyExperimentManager {
 
   static get defaultCompletionHandler() {
     return function(params) {
+      if (!window.analytics || !window.analytics.track) {
+        throw new Error('Tiny by default uses the segment library to populate experiment results data. To customize, pass in a function value to key globalExperimentCompletionHandler in the init() method');
+      }
+
       window.analytics.ready(() => {
         window.analytics.track('Experiment Viewed', params);
       });
@@ -26,14 +30,14 @@ class TinyExperimentManager {
 
   init(args) {
     if (!args.experiments) {
-      throw TinyExperimentError('Tiny experiment init() requires experiments')
+      throw new Error('Tiny experiment init() requires experiments as an array')
     }
 
     this.setExperiments(args.experiments);
 
     if (args.globalExperimentCompletionHandler) {
       if (typeof args.globalExperimentCompletionHandler != 'function') {
-        throw TypeError('Tiny experiment: global completion handler must be a function');
+        throw new TypeError('Global completion handler must be a function');
       }
       this.globalExperimentCompletionHandler = args.globalExperimentCompletionHandler
     }
@@ -68,7 +72,7 @@ class TinyExperimentManager {
     if (key && param) {
       this.experimentRegistrationPromise.then(function (key, expInt, expName) {
         if (!this.getExperiment(key)) {
-          throw ReferenceError('Tiny experiment: Tried to manually run experiment (' + key + ') that is not registered.')
+          throw new ReferenceError('Tried to manually run experiment (' + key + ') that is not registered.')
         }
 
         this.getExperiment(key).run(param);
@@ -83,5 +87,6 @@ function getURLParameter(param) {
     .exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
 
-window.tinyManager = new TinyExperimentManager()
-export default window.tinyManager
+let manager = new TinyExperimentManager();
+if (window) window.tinyManager = manager;
+export default manager
