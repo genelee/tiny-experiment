@@ -74,7 +74,7 @@ To customize the default behavior when an experiment is run:
 
 ```
 import tinyManager from 'tiny-experiment';
-tinyManager.init({
+tinyManager.setup({
   experiments: [ ...experiments... ],
   globalCompletionHandler: function(params) {
     // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames
