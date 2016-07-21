@@ -32,7 +32,7 @@ export default class TinyExperiment {
       let rand = Math.random();
       let i = 0;
 
-      let cumulatedWeight = this.variantWeights.reduce(a, b => {
+      let cumulatedWeight = this.variantWeights.reduce((a, b) => {
         if (!this.variantId && a + b > rand) this.variantId = i;
 
         i++
