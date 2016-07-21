@@ -8,6 +8,7 @@ export default class TinyExperiment {
     this.experimentName = args.experimentName;
     this.variantNames = args.variantNames;
     this.variantWeights = args.variantWeights;
+    this.variantId = undefined;
 
     this._cookies = new TinyExperimentCookieInterface();
     this._cached = args.cached || false;
@@ -33,7 +34,7 @@ export default class TinyExperiment {
       let i = 0;
 
       let cumulatedWeight = this.variantWeights.reduce((a, b) => {
-        if (!this.variantId && a + b > rand) this.variantId = i;
+        if (this.variantId == undefined && a + b > rand) this.variantId = i;
 
         i++
         return a + b;
