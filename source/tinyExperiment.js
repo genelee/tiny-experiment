@@ -33,7 +33,7 @@ export default class TinyExperiment {
       let i = 0;
 
       let cumulatedWeight = this.variantWeights.reduce(a, b => {
-        if (a + b > rand) this.variantId = i;
+        if (!this.variantId && a + b > rand) this.variantId = i;
 
         i++
         return a + b;
@@ -49,7 +49,7 @@ export default class TinyExperiment {
     if (!Array.isArray(this.variantNames) || this.variantNames.length == 0) {
       throw new TypeError("Variant names must be an array of strings");
     }
-    
+
     this.variantNames[this.variantId];
   }
 
