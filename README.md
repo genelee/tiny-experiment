@@ -2,10 +2,6 @@
 
 A lightweight utility to run split tests in your javascript application.
 
-To-do list:
-Allow traffic allocation by percentage
-
-
 # Quick start
 
 1) Install
