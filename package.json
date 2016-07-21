@@ -13,9 +13,13 @@
     "url": "https://github.com/genelee/tiny-experiment.git"
   },
   "keywords": [
-    "AB",
     "split",
+    "split-testing",
+    "ab",
+    "a/b",
+    "ab-testing",
     "test",
+    "testing",
     "experiment",
     "optimizely"
   ],
