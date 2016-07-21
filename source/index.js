@@ -93,4 +93,4 @@ function getURLParameter(param) {
 
 let manager = new TinyExperimentManager();
 if (window) window.tinyManager = manager;
-export default manager
+module.exports = manager;

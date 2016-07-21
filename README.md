@@ -11,12 +11,8 @@ npm install tiny-experiment --save
 
 2) Require module
 ```
-import tinyManager from 'tiny-experiment';
-window.tinyManager = tinyManager;
-
-// or es5
-
-window.tinyManager = require('tiny-experiment').default;
+var tinyManager = require('tiny-experiment');
+// window.tinyManager is available now
 
 ```
 
@@ -27,8 +23,10 @@ tinyManager.setup({
     {
       experimentKey(required): 'homepageButtonStyle', // unique key
       experimentName(required): 'Homepage button style', // descriptive name for analytics
+
       variantNames(required): ['blue', 'red'],
       variantWeights(optional): [0.25, 0.75], // must add up to 1.0
+      
       cached(optional): Boolean // default false, if true user will see same variant next time
       cachePeriod(optional): Number // default 7, if cached user will see same variant for X days
     },
