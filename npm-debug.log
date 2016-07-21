@@ -3,110 +3,23 @@
 2 info using npm@1.4.28
 3 info using node@v0.10.35
 4 verbose publish [ '.' ]
-5 verbose cache add [ '.', null ]
-6 verbose cache add name=undefined spec="." args=[".",null]
-7 verbose parsed url { protocol: null,
-7 verbose parsed url   slashes: null,
-7 verbose parsed url   auth: null,
-7 verbose parsed url   host: null,
-7 verbose parsed url   port: null,
-7 verbose parsed url   hostname: null,
-7 verbose parsed url   hash: null,
-7 verbose parsed url   search: null,
-7 verbose parsed url   query: null,
-7 verbose parsed url   pathname: '.',
-7 verbose parsed url   path: '.',
-7 verbose parsed url   href: '.' }
-8 silly lockFile 3a52ce78- .
-9 verbose lock . /Users/jaelee/.npm/3a52ce78-.lock
-10 verbose tar pack [ '/Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz', '.' ]
-11 verbose tarball /Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz
-12 verbose folder .
-13 info prepublish tiny-experiment@1.0.54
-14 verbose unsafe-perm in lifecycle true
-15 silly lockFile 1f1177db-tar tar://.
-16 verbose lock tar://. /Users/jaelee/.npm/1f1177db-tar.lock
-17 silly lockFile 845fa3c9-ny-experiment-1-0-54-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz
-18 verbose lock tar:///Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz /Users/jaelee/.npm/845fa3c9-ny-experiment-1-0-54-package-tgz.lock
-19 silly lockFile 1f1177db-tar tar://.
-20 silly lockFile 1f1177db-tar tar://.
-21 silly lockFile 845fa3c9-ny-experiment-1-0-54-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz
-22 silly lockFile 845fa3c9-ny-experiment-1-0-54-package-tgz tar:///Users/jaelee/.npm/tiny-experiment/1.0.54/package.tgz
-23 silly lockFile 4da7f887-m-tiny-experiment-1-0-54-package /Users/jaelee/.npm/tiny-experiment/1.0.54/package
-24 verbose lock /Users/jaelee/.npm/tiny-experiment/1.0.54/package /Users/jaelee/.npm/4da7f887-m-tiny-experiment-1-0-54-package.lock
-25 silly lockFile 4da7f887-m-tiny-experiment-1-0-54-package /Users/jaelee/.npm/tiny-experiment/1.0.54/package
-26 silly lockFile 4da7f887-m-tiny-experiment-1-0-54-package /Users/jaelee/.npm/tiny-experiment/1.0.54/package
-27 silly lockFile 3a52ce78- .
-28 silly lockFile 3a52ce78- .
-29 silly publish { name: 'tiny-experiment',
-29 silly publish   version: '1.0.54',
-29 silly publish   description: 'Lightweight javascript module to run AB tests',
-29 silly publish   main: './distribution/index.js',
-29 silly publish   scripts:
-29 silly publish    { test: 'echo "Error: no test specified" && exit 1',
-29 silly publish      build: 'babel source --presets babel-preset-es2015 --out-dir distribution',
-29 silly publish      prepublish: 'npm run build' },
-29 silly publish   repository:
-29 silly publish    { type: 'git',
-29 silly publish      url: 'https://github.com/genelee/tiny-experiment.git' },
-29 silly publish   keywords: [ 'AB', 'test', 'experiment', 'optimizely', 'interface' ],
-29 silly publish   author: { name: 'Gene Lee' },
-29 silly publish   license: 'ISC',
-29 silly publish   bugs: { url: 'https://github.com/genelee/tiny-experiment/issues' },
-29 silly publish   homepage: 'https://github.com/genelee/tiny-experiment',
-29 silly publish   devDependencies:
-29 silly publish    { 'babel-cli': '^6.10.1',
-29 silly publish      'babel-preset-es2015': '^6.9.0',
-29 silly publish      'babel-preset-react': '^6.11.1',
-29 silly publish      babelify: '^7.3.0',
-29 silly publish      browserify: '^13.0.1' },
-29 silly publish   dependencies: { 'promise-polyfill': '^5.2.1' },
-29 silly publish   readme: '# tiny-experiment\n\nA lightweight utility to run split tests in your javascript application.\n\nTo-do list:\nAllow traffic allocation by percentage\n\n\n# Quick start\n\n1) Install\n```\nnpm install tiny-experiment --save\n```\n\n2) Require module\n```\nimport tinyManager from \'tiny-experiment\';\nwindow.tinyManager = tinyManager;\n\n// or es5\n\nwindow.tinyManager = require(\'tiny-experiment\').default;\n\n```\n\n3) Register experiments once\n```\ntinyManager.setup({\n  experiments: [\n    {\n      experimentKey(required): \'homepageButtonStyle\', // unique key\n      experimentName(required): \'Homepage button style\', // descriptive name for analytics\n      variantNames(required): [\'blue\', \'red\'],\n      cached(optional): Boolean // default false, if true user will see same variant next time\n      cachePeriod(optional): Number // default 7, if cached user will see same variant for X days\n    },\n    {\n      // experiment two\n    }\n  ]\n})\n```\n\n4a) Then run an experiment with variant-specific handlers\n```\nvar experiment = tinyManager.getExperiment(\'homepageButtonStyle\')\n\nexperiment\n.on(\'blue\', function() {\n  // make button blue\n})\n.on(\'red\', function() {\n  // make button red\n})\n.run()\n```\n\n4b) You can \'run\' the experiment asynchronously\n```\nexperiment\n.on(\'blue\', function() { ... })\n\nsomeAsyncFunction(function() {\n  experiment.run()\n})\n```\n\n# When an experiment is run\n\nA segment analytics call is made with event name \'Experiment Viewed\', and the properties: experimentName, variantName, variantInt, and variantNames. Make your funnel with \'Experiment Viewed\' (experimentName, variantName) as the start point and any other segment event as the endpoint. \n\nTo customize the default behavior when an experiment is run:\n\n```\nimport tinyManager from \'tiny-experiment\';\ntinyManager.setup({\n  experiments: [ ...experiments... ],\n  globalCompletionHandler: function(params) {\n    // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames\n  }\n})\n```\n\n# Manual variant setting\n\n```\nhttp://domain.com/?experimentKey=homepageButtonStyle&variantName=blue\n```\n\nThis will run the experiment with experimentKey = homepageButtonStyle, and manually set the variant as \'blue\'\n\n# Angular \n\na directive that let\'s you hide/show elements without writing any javascript: https://github.com/genelee/angular-experiment\n',
-29 silly publish   readmeFilename: 'README.md',
-29 silly publish   gitHead: '849a180c30d55d3258567be4f7d98e07bac8366a',
-29 silly publish   _id: 'tiny-experiment@1.0.54',
-29 silly publish   _shasum: '6e0b8beb734b977b8aabef7e281d00f86e332106',
-29 silly publish   _from: '.' }
-30 verbose request where is /tiny-experiment
-31 verbose request registry https://registry.npmjs.org/
-32 verbose request id e23671f775a601c7
-33 verbose url raw /tiny-experiment
-34 verbose url resolving [ 'https://registry.npmjs.org/', './tiny-experiment' ]
-35 verbose url resolved https://registry.npmjs.org/tiny-experiment
-36 verbose request where is https://registry.npmjs.org/tiny-experiment
-37 info trying registry request attempt 1 at 12:00:22
-38 http PUT https://registry.npmjs.org/tiny-experiment
-39 http 403 https://registry.npmjs.org/tiny-experiment
-40 verbose headers { 'content-type': 'application/json',
-40 verbose headers   'cache-control': 'max-age=300',
-40 verbose headers   'content-length': '96',
-40 verbose headers   'accept-ranges': 'bytes',
-40 verbose headers   date: 'Wed, 20 Jul 2016 16:00:24 GMT',
-40 verbose headers   via: '1.1 varnish',
-40 verbose headers   connection: 'keep-alive',
-40 verbose headers   'x-served-by': 'cache-iad2126-IAD',
-40 verbose headers   'x-cache': 'MISS',
-40 verbose headers   'x-cache-hits': '0',
-40 verbose headers   'x-timer': 'S1469030423.015669,VS0,VE1062',
-40 verbose headers   vary: 'Accept-Encoding' }
-41 error publish Failed PUT 403
-42 error Error: "You cannot publish over the previously published version 1.0.54." : tiny-experiment
-42 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
-42 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
-42 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:236:22)
-42 error     at Request.emit (events.js:98:17)
-42 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1142:14)
-42 error     at Request.emit (events.js:117:20)
-42 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1096:12)
-42 error     at IncomingMessage.emit (events.js:117:20)
-42 error     at _stream_readable.js:944:16
-42 error     at process._tickCallback (node.js:442:13)
-43 error If you need help, you may report this *entire* log,
-43 error including the npm and node versions, at:
-43 error     <http://github.com/npm/npm/issues>
-44 error System Darwin 15.0.0
-45 error command "node" "/usr/local/bin/npm" "publish"
-46 error cwd /Users/jaelee/Projects/tiny-experiment
-47 error node -v v0.10.35
-48 error npm -v 1.4.28
-49 verbose exit [ 1, true ]
+5 error Error: Invalid version: "1.1"
+5 error     at Object.module.exports.fixVersionField (/usr/local/lib/node_modules/npm/node_modules/read-package-json/node_modules/normalize-package-data/lib/fixer.js:183:13)
+5 error     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/node_modules/normalize-package-data/lib/normalize.js:30:38
+5 error     at Array.forEach (native)
+5 error     at normalize (/usr/local/lib/node_modules/npm/node_modules/read-package-json/node_modules/normalize-package-data/lib/normalize.js:29:15)
+5 error     at final (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:342:33)
+5 error     at then (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:126:33)
+5 error     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:331:40
+5 error     at evalmachine.<anonymous>:272:14
+5 error     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:102:5
+5 error     at Object.oncomplete (evalmachine.<anonymous>:108:15)
+6 error If you need help, you may report this *entire* log,
+6 error including the npm and node versions, at:
+6 error     <http://github.com/npm/npm/issues>
+7 error System Darwin 15.0.0
+8 error command "node" "/usr/local/bin/npm" "publish"
+9 error cwd /Users/jaelee/Projects/tiny-experiment
+10 error node -v v0.10.35
+11 error npm -v 1.4.28
+12 verbose exit [ 1, true ]
