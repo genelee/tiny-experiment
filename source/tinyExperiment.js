@@ -7,7 +7,7 @@ export default class TinyExperiment {
     this.experimentKey = args.experimentKey;
     this.experimentName = args.experimentName;
     this.variantNames = args.variantNames;
-    this.variantWeights = undefined;
+    this.variantWeights = args.variantWeights;
 
     this._cookies = new TinyExperimentCookieInterface();
     this._cached = args.cached || false;
