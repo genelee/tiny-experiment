@@ -6,7 +6,7 @@ class TinyExperimentManager {
   static get defaultCompletionHandler() {
     return function(params) {
       if (!window.analytics || !window.analytics.track) {
-        throw new Error('Tiny by default uses the segment library to populate experiment results data. To customize, pass in a function value to key globalExperimentCompletionHandler in the setup() method');
+        throw new Error('Tiny by default uses the segment library to populate experiment results data. To customize, pass in a function value to key globalCompletionHandler in the setup() method');
       }
 
       window.analytics.ready(() => {
@@ -17,7 +17,7 @@ class TinyExperimentManager {
 
   constructor() {
     this.experiments = [];
-    this.globalExperimentCompletionHandler = TinyExperimentManager.defaultCompletionHandler;
+    this.globalCompletionHandler = TinyExperimentManager.defaultCompletionHandler;
     this.experimentRegistrationPromise = new Promise((_resolve) => {
       this._resolveExperimentRegistration = _resolve;
     });
@@ -35,11 +35,11 @@ class TinyExperimentManager {
 
     this.setExperiments(args.experiments);
 
-    if (args.globalExperimentCompletionHandler) {
-      if (typeof args.globalExperimentCompletionHandler != 'function') {
+    if (args.globalCompletionHandler) {
+      if (typeof args.globalCompletionHandler != 'function') {
         throw new TypeError('Global completion handler must be a function');
       }
-      this.globalExperimentCompletionHandler = args.globalExperimentCompletionHandler
+      this.globalCompletionHandler = args.globalCompletionHandler
     }
   }
 

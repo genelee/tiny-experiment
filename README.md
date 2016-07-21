@@ -26,7 +26,7 @@ tinyManager.setup({
 
       variantNames(required): ['blue', 'red'],
       variantWeights(optional): [0.25, 0.75], // must add up to 1.0
-      
+
       cached(optional): Boolean // default false, if true user will see same variant next time
       cachePeriod(optional): Number // default 7, if cached user will see same variant for X days
     },
@@ -53,12 +53,13 @@ experiment
 
 4b) You can 'run' the experiment asynchronously
 ```
-experiment
-.on('blue', function() { ... })
+experiment.on('blue', function() { ... })
 
 someAsyncFunction(function() {
   experiment.run()
 })
+
+// or reversed in order
 ```
 
 # When an experiment is run
