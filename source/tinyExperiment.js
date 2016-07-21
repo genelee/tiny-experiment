@@ -50,7 +50,7 @@ export default class TinyExperiment {
       throw new TypeError("Variant names must be an array of strings");
     }
 
-    this.variantNames[this.variantId];
+    this.variantName = this.variantNames[this.variantId];
   }
 
   init() {
