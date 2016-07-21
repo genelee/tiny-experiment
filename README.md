@@ -32,6 +32,7 @@ tinyManager.setup({
       experimentKey(required): 'homepageButtonStyle', // unique key
       experimentName(required): 'Homepage button style', // descriptive name for analytics
       variantNames(required): ['blue', 'red'],
+      variantWeights(optional): [0.25, 0.75], // must add up to 1.0
       cached(optional): Boolean // default false, if true user will see same variant next time
       cachePeriod(optional): Number // default 7, if cached user will see same variant for X days
     },
@@ -68,7 +69,7 @@ someAsyncFunction(function() {
 
 # When an experiment is run
 
-A segment analytics call is made with event name 'Experiment Viewed', and the properties: experimentName, variantName, variantInt, and variantNames. Make your funnel with 'Experiment Viewed' (experimentName, variantName) as the start point and any other segment event as the endpoint. 
+A segment analytics call is made with event name 'Experiment Viewed', and the properties: experimentName, variantName, variantId, and variantNames. Make your funnel with 'Experiment Viewed' (experimentName, variantName) as the start point and any other segment event as the endpoint. 
 
 To customize the default behavior when an experiment is run:
 
@@ -77,7 +78,7 @@ import tinyManager from 'tiny-experiment';
 tinyManager.setup({
   experiments: [ ...experiments... ],
   globalCompletionHandler: function(params) {
-    // do something where argument, params, has keys: experimentName, variantName, variantInt, and variantNames
+    // do something where argument, params, has keys: experimentName, variantName, variantId, and variantNames
   }
 })
 ```
@@ -85,7 +86,7 @@ tinyManager.setup({
 # Manual variant setting
 
 ```
-http://domain.com/?experimentKey=homepageButtonStyle&variantName=blue
+http://domain.com/?experimentKey=homepageButtonStyle&variantName=blue || variantId=1
 ```
 
 This will run the experiment with experimentKey = homepageButtonStyle, and manually set the variant as 'blue'
