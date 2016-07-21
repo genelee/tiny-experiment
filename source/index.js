@@ -64,7 +64,7 @@ class TinyExperimentManager {
 
   parseURLForManualExperimentation() {
     let key = getURLParameter('experimentKey')
-    let expInt = getURLParameter('variantInt')
+    let expInt = getURLParameter('variantId')
     let expName = getURLParameter('variantName')
 
     var param;

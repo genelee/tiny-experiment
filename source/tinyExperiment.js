@@ -2,22 +2,23 @@ import TinyExperimentCookieInterface from './tinyExperimentCookieInterface';
 
 export default class TinyExperiment {
   constructor(args = {}) {
-    this.cached = args.cached || false;
-    this.cachePeriod = args.cachePeriod || 7;
-    this.completionHandler = args.completionHandler;
+    this._numVariantPossibilities = args.variantNames.length;
+
     this.experimentKey = args.experimentKey;
     this.experimentName = args.experimentName;
-    this.tracked = false;
-    this.variantInt = this.getRandomVariant(args.variantNames.length);
     this.variantNames = args.variantNames;
-    this.variantHandlers = {};
+    this.variantWeights = undefined;
 
-    this.completion = new Promise((_resolve, _reject) => {
+    this._cookies = new TinyExperimentCookieInterface();
+    this._cached = args.cached || false;
+    this._cachePeriod = args.cachePeriod || 7;
+    this._variantHandlers = {};
+    this._tracked = false;
+    this._completionHandler = args.completionHandler;
+    this._completion = new Promise((_resolve, _reject) => {
       this._executeExperiment = _resolve;
       this._cancelExperiment = _reject;
     });
-
-    this.cookies = new TinyExperimentCookieInterface();
 
     this.init();
   }
@@ -26,33 +27,54 @@ export default class TinyExperiment {
     return Math.floor(Math.random() * possibilities);
   }
 
+  allocVariantId() {
+    if (this.variantWeights) {
+      let rand = Math.random();
+      let i = 0;
+
+      let cumulatedWeight = this.variantWeights.reduce(a, b => {
+        if (a + b > rand) this.variantId = i;
+
+        i++
+        return a + b;
+      }, 0);
+
+      if (cumulatedWeight != 1.0) throw new Error('Variant weights must add up to 1.0');
+    } else {
+      this.variantId = Math.floor(Math.random() * this._numVariantPossibilities);
+    }
+  }
+
+  allocVariantName() {
+    if (!Array.isArray(this.variantNames) || this.variantNames.length == 0) {
+      throw new TypeError("Variant names must be an array of strings");
+    }
+    
+    this.variantNames[this.variantId];
+  }
+
   init() {
 
-    const validArray = Array.isArray(this.variantNames) && this.variantNames.length > 0;
-    if (typeof this.variantInt == 'number' && validArray) {
-      this.variantName = this.variantNames[this.variantInt];
-    } else {
-      throw new TypeError("Failed to setup experiment (" + this.experimentKey + ") due to improperly typed experiment meta data");
-      return false;
-    }
+    this.allocVariantId();
+    this.allocVariantName();
 
-    if (this.cached) {
-      if (this.cookies.getVariant(this.experimentKey)) {
-        this.variantName = this.cookies.getVariant(this.experimentKey);
-        this.variantInt = this.variantNames.indexOf(this.variantName);
+    if (this._cached) {
+      if (this._cookies.getVariant(this.experimentKey)) {
+        this.variantName = this._cookies.getVariant(this.experimentKey);
+        this.variantId = this.variantNames.indexOf(this.variantName);
       } else {
-        this.cookies.setVariant(this.experimentKey, this.variantName, this.cachePeriod);
+        this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
       }
     }
 
-    this.completion.then(() => {
-      if (typeof this.variantHandlers[this.variantName] == 'function') {
-        this.variantHandlers[this.variantName]();
+    this._completion.then(() => {
+      if (typeof this._variantHandlers[this.variantName] == 'function') {
+        this._variantHandlers[this.variantName]();
       }
-      this.tracked = true;
-      this.completionHandler.call(this, {
+      this._tracked = true;
+      this._completionHandler.call(this, {
         experimentName: this.experimentName,
-        variantInt: this.variantInt,
+        variantId: this.variantId,
         variantName: this.variantName,
         variantNames: this.variantNames
       });
@@ -60,7 +82,7 @@ export default class TinyExperiment {
   }
 
   on(variantName = String(), handler = () => {}) {
-    this.variantHandlers[variantName] = handler;
+    this._variantHandlers[variantName] = handler;
     return this; // to chain .on(func).on(func).run()
   }
 
@@ -68,26 +90,20 @@ export default class TinyExperiment {
     const experimentKey = this.experimentKey;
 
     if (typeof arguments[0] == "number") {
-      const variantInt = arguments[0];
-      this.variantInt = variantInt;
-      this.variantName = this.variantNames[variantInt];
+      this.variantId = arguments[0];
+      this.variantName = this.variantNames[this.variantId];
     }
     else if (typeof arguments[0] == "string") {
-      const variantName = arguments[0];
-      this.variantName = variantName;
-      this.variantInt = this.variantNames.indexOf(variantName);
+      this.variantName = arguments[0];
+      this.variantId = this.variantNames.indexOf(this.variantName);
     }
 
-    if (!this.tracked) {
-      this._executeExperiment(this);
+    if (!this._tracked) {
+      this._executeExperiment.bind(this)();
     } else {
       this._cancelExperiment();
     }
 
-    return this.completion;
-  }
-
-  end() {
-    this._cancelExperiment();
+    return this._completion;
   }
 }
