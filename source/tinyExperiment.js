@@ -11,6 +11,7 @@ export default class TinyExperiment {
     this.variantId = undefined;
 
     this._cookies = new TinyExperimentCookieInterface();
+    this._rerun = args.rerun || false;
     this._cached = args.cached || false;
     this._cachePeriod = args.cachePeriod || 7;
     this._variantHandlers = {};
@@ -101,7 +102,16 @@ export default class TinyExperiment {
 
     if (!this._tracked) {
       this._executeExperiment.bind(this)();
-    } else {
+    }
+    else if (this._rerun) {
+      this._completionHandler.call(this, {
+        experimentName: this.experimentName,
+        variantId: this.variantId,
+        variantName: this.variantName,
+        variantNames: this.variantNames
+      });
+    }
+    else {
       this._cancelExperiment();
     }
 
