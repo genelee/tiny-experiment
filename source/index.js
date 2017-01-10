@@ -33,6 +33,10 @@ class TinyExperimentManager {
       throw new Error('Tiny experiment setup requires experiments as an array')
     }
 
+    if (Array.isArray(this.experiments) && this.experiments.length) {
+      args.experiments = this.experiments.concat(args.experiments);
+    }
+
     this.setExperiments(args.experiments);
 
     if (args.globalCompletionHandler) {
