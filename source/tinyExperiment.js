@@ -68,6 +68,15 @@ export default class TinyExperiment {
         this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
       }
     }
+  }
+
+  on(variantName = String(), handler = () => {}) {
+    this._variantHandlers[variantName] = handler;
+    return this; // to chain .on(func).on(func).run()
+  }
+
+  run() {
+    const experimentKey = this.experimentKey;
 
     this._completion.then(() => {
       if (typeof this._variantHandlers[this.variantName] == 'function') {
@@ -81,15 +90,6 @@ export default class TinyExperiment {
         variantNames: this.variantNames
       });
     });
-  }
-
-  on(variantName = String(), handler = () => {}) {
-    this._variantHandlers[variantName] = handler;
-    return this; // to chain .on(func).on(func).run()
-  }
-
-  run() {
-    const experimentKey = this.experimentKey;
 
     if (typeof arguments[0] == "number") {
       this.variantId = arguments[0];
