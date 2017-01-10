@@ -1,8 +1,8 @@
 {
   "name": "tiny-experiment",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Lightweight javascript module to run AB tests",
-  "main": "./distribution/bundle.js",
+  "main": "./distribution/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel source --presets babel-preset-es2015 --out-dir distribution & browserify --debug distribution/*.js > distribution/bundle.js",
