@@ -24,6 +24,10 @@ export default class TinyExperiment {
     this.assignVariantId();
     this.assignVariantName();
 
+    this.updateCache();
+  }
+
+  updateCache() {
     // handles experiment caching
     if (this._cached) {
       if (this._cookies.getVariant(this.experimentKey)) {
@@ -77,6 +81,8 @@ export default class TinyExperiment {
       this.variantName = arguments[0];
       this.variantId = this.variantNames.indexOf(this.variantName);
     }
+
+    this.updateCache();
 
     if (!this._tracked) {
       this._executeExperiment.bind(this)();
