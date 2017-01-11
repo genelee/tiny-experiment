@@ -44,7 +44,7 @@ class TinyExperimentManager {
   addExperiments(experiments = []) {
     let to_add = experiments.map((e) => {
       if (!e.completionHandler) {
-        e.completionHandler = TinyExperimentManager.defaultCompletionHandler;
+        e.completionHandler = this.globalCompletionHandler;
       }
       return new TinyExperiment(e);
     });
