@@ -32,13 +32,8 @@ class TinyExperimentManager {
     if (!args.experiments) {
       throw new Error('Tiny experiment setup requires experiments as an array')
     }
-
-    if (Array.isArray(this._experimentData) && this._experimentData.length) {
-      args.experiments = this._experimentData.concat(args.experiments);
-    }
-
-    this._experimentData = args.experiments;
-    this.setExperiments(args.experiments);
+    
+    this.addExperiments(args.experiments);
 
     if (args.globalCompletionHandler) {
       if (typeof args.globalCompletionHandler != 'function') {
@@ -52,15 +47,15 @@ class TinyExperimentManager {
     return this.setup(args);
   }
 
-  setExperiments(experiments = []) {
-    this.experiments = experiments.map((e) => {
+  addExperiments(experiments = []) {
+    let to_add = experiments.map((e) => {
       if (!e.completionHandler) {
         e.completionHandler = TinyExperimentManager.defaultCompletionHandler;
       }
       return new TinyExperiment(e);
     });
 
-    this._resolveExperimentRegistration();
+    this.experiments = to_add.concat(this.experiments);
   }
 
   getExperiment(experimentKey = String()) {

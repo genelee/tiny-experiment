@@ -11,7 +11,6 @@ export default class TinyExperiment {
     this.variantId = undefined;
 
     this._cookies = new TinyExperimentCookieInterface();
-    this._rerun = args.rerun || false;
     this._cached = args.cached || false;
     this._cachePeriod = args.cachePeriod || 7;
     this._variantHandlers = {};
@@ -22,14 +21,21 @@ export default class TinyExperiment {
       this._cancelExperiment = _reject;
     });
 
-    this.init();
+    this.assignVariantId();
+    this.assignVariantName();
+
+    // handles experiment caching
+    if (this._cached) {
+      if (this._cookies.getVariant(this.experimentKey)) {
+        this.variantName = this._cookies.getVariant(this.experimentKey);
+        this.variantId = this.variantNames.indexOf(this.variantName);
+      } else {
+        this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
+      }
+    }
   }
 
-  getRandomVariant(possibilities) {
-    return Math.floor(Math.random() * possibilities);
-  }
-
-  allocVariantId() {
+  assignVariantId() {
     if (this.variantWeights) {
       let rand = Math.random();
       let i = 0;
@@ -47,27 +53,12 @@ export default class TinyExperiment {
     }
   }
 
-  allocVariantName() {
+  assignVariantName() {
     if (!Array.isArray(this.variantNames) || this.variantNames.length == 0) {
       throw new TypeError("Variant names must be an array of strings");
     }
 
     this.variantName = this.variantNames[this.variantId];
-  }
-
-  init() {
-
-    this.allocVariantId();
-    this.allocVariantName();
-
-    if (this._cached) {
-      if (this._cookies.getVariant(this.experimentKey)) {
-        this.variantName = this._cookies.getVariant(this.experimentKey);
-        this.variantId = this.variantNames.indexOf(this.variantName);
-      } else {
-        this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
-      }
-    }
   }
 
   on(variantName = String(), handler = () => {}) {
@@ -89,14 +80,6 @@ export default class TinyExperiment {
 
     if (!this._tracked) {
       this._executeExperiment.bind(this)();
-    }
-    else if (this._rerun) {
-      this._completionHandler.call(this, {
-        experimentName: this.experimentName,
-        variantId: this.variantId,
-        variantName: this.variantName,
-        variantNames: this.variantNames
-      });
     }
     else {
       this._cancelExperiment();
