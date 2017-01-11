@@ -18,11 +18,6 @@ class TinyExperimentManager {
   constructor() {
     this.experiments = [];
     this.globalCompletionHandler = TinyExperimentManager.defaultCompletionHandler;
-
-    document.addEventListener('DOMContentLoaded', function handler() {
-      document.removeEventListener('DOMContentLoaded', handler.bind(this), false);
-      this.parseURLForManualExperimentation();
-    }.bind(this), false);
   }
 
   setup(args) {
@@ -38,6 +33,8 @@ class TinyExperimentManager {
       }
       this.globalCompletionHandler = args.globalCompletionHandler
     }
+
+    this.parseURLForManualExperimentation();
   }
 
   init(args) {
