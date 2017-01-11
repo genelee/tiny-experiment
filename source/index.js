@@ -18,9 +18,6 @@ class TinyExperimentManager {
   constructor() {
     this.experiments = [];
     this.globalCompletionHandler = TinyExperimentManager.defaultCompletionHandler;
-    this.experimentRegistrationPromise = new Promise((_resolve) => {
-      this._resolveExperimentRegistration = _resolve;
-    });
 
     document.addEventListener('DOMContentLoaded', function handler() {
       document.removeEventListener('DOMContentLoaded', handler.bind(this), false);
@@ -32,7 +29,7 @@ class TinyExperimentManager {
     if (!args.experiments) {
       throw new Error('Tiny experiment setup requires experiments as an array')
     }
-    
+
     this.addExperiments(args.experiments);
 
     if (args.globalCompletionHandler) {
@@ -74,13 +71,11 @@ class TinyExperimentManager {
       param = expName;
     }
     if (key && param) {
-      this.experimentRegistrationPromise.then(function (key, expInt, expName) {
-        if (!this.getExperiment(key)) {
-          throw new ReferenceError('Tried to manually run experiment (' + key + ') that is not registered.')
-        }
+      if (!this.getExperiment(key)) {
+        throw new ReferenceError('Tried to manually run experiment (' + key + ') that is not registered.')
+      }
 
-        this.getExperiment(key).run(param);
-      }.bind(this, key, expInt, expName));
+      this.getExperiment(key).run(param);
     }
   }
 }
