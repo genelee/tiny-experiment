@@ -1,6 +1,6 @@
 {
   "name": "tiny-experiment",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Lightweight javascript module to run AB tests",
   "main": "./distribution/index.js",
   "scripts": {

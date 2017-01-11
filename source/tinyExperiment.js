@@ -78,19 +78,6 @@ export default class TinyExperiment {
   run() {
     const experimentKey = this.experimentKey;
 
-    this._completion.then(() => {
-      if (typeof this._variantHandlers[this.variantName] == 'function') {
-        this._variantHandlers[this.variantName]();
-      }
-      this._tracked = true;
-      this._completionHandler.call(this, {
-        experimentName: this.experimentName,
-        variantId: this.variantId,
-        variantName: this.variantName,
-        variantNames: this.variantNames
-      });
-    });
-
     if (typeof arguments[0] == "number") {
       this.variantId = arguments[0];
       this.variantName = this.variantNames[this.variantId];
@@ -114,6 +101,19 @@ export default class TinyExperiment {
     else {
       this._cancelExperiment();
     }
+
+    this._completion.then(() => {
+      if (typeof this._variantHandlers[this.variantName] == 'function') {
+        this._variantHandlers[this.variantName]();
+      }
+      this._tracked = true;
+      this._completionHandler.call(this, {
+        experimentName: this.experimentName,
+        variantId: this.variantId,
+        variantName: this.variantName,
+        variantNames: this.variantNames
+      });
+    });
 
     return this._completion;
   }
