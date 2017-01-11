@@ -91,13 +91,16 @@ export default class TinyExperiment {
       if (typeof this._variantHandlers[this.variantName] == 'function') {
         this._variantHandlers[this.variantName]();
       }
-      this._tracked = true;
-      this._completionHandler.call(this, {
-        experimentName: this.experimentName,
-        variantId: this.variantId,
-        variantName: this.variantName,
-        variantNames: this.variantNames
-      });
+      
+      if (!this._tracked) {
+        this._tracked = true;
+        this._completionHandler.call(this, {
+          experimentName: this.experimentName,
+          variantId: this.variantId,
+          variantName: this.variantName,
+          variantNames: this.variantNames
+        });
+      }
     });
 
     return this._completion;
