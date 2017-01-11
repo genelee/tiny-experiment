@@ -63,9 +63,9 @@ class TinyExperimentManager {
 
     var param;
     if (expInt && !isNaN(expInt)) {
-      param = expInt;
+      param = Number(expInt);
     } else {
-      param = expName;
+      param = String(expName);
     }
     if (key && param) {
       if (!this.getExperiment(key)) {

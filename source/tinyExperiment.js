@@ -21,48 +21,44 @@ export default class TinyExperiment {
       this._cancelExperiment = _reject;
     });
 
-    this.assignVariantId();
-    this.assignVariantName();
-
-    this.updateCache();
+    this._assignExperimentMetadata();
+    this._updateCache();
   }
 
-  updateCache() {
-    // handles experiment caching
+  _updateCache() {
     if (this._cached) {
-      if (this._cookies.getVariant(this.experimentKey)) {
-        this.variantName = this._cookies.getVariant(this.experimentKey);
-        this.variantId = this.variantNames.indexOf(this.variantName);
+      this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
+    }
+  }
+
+  _assignExperimentMetadata() {
+    if (this._cached && this._cookies.getVariant(this.experimentKey)) {
+      this.variantName = this._cookies.getVariant(this.experimentKey);
+      this.variantId = this.variantNames.indexOf(this.variantName);
+    }
+    else {
+      if (this.variantWeights) {
+        let rand = Math.random();
+        let i = 0;
+
+        let cumulatedWeight = this.variantWeights.reduce((a, b) => {
+          if (this.variantId == undefined && a + b > rand) this.variantId = i;
+
+          i++
+          return a + b;
+        }, 0);
+
+        if (cumulatedWeight != 1.0) throw new Error('Variant weights must add up to 1.0');
       } else {
-        this._cookies.setVariant(this.experimentKey, this.variantName, this._cachePeriod);
+        this.variantId = Math.floor(Math.random() * this._numVariantPossibilities);
       }
+
+      if (!Array.isArray(this.variantNames) || this.variantNames.length == 0) {
+        throw new TypeError("Variant names must be an array of strings");
+      }
+
+      this.variantName = this.variantNames[this.variantId];
     }
-  }
-
-  assignVariantId() {
-    if (this.variantWeights) {
-      let rand = Math.random();
-      let i = 0;
-
-      let cumulatedWeight = this.variantWeights.reduce((a, b) => {
-        if (this.variantId == undefined && a + b > rand) this.variantId = i;
-
-        i++
-        return a + b;
-      }, 0);
-
-      if (cumulatedWeight != 1.0) throw new Error('Variant weights must add up to 1.0');
-    } else {
-      this.variantId = Math.floor(Math.random() * this._numVariantPossibilities);
-    }
-  }
-
-  assignVariantName() {
-    if (!Array.isArray(this.variantNames) || this.variantNames.length == 0) {
-      throw new TypeError("Variant names must be an array of strings");
-    }
-
-    this.variantName = this.variantNames[this.variantId];
   }
 
   on(variantName = String(), handler = () => {}) {
@@ -76,13 +72,13 @@ export default class TinyExperiment {
     if (typeof arguments[0] == "number") {
       this.variantId = arguments[0];
       this.variantName = this.variantNames[this.variantId];
+      this._updateCache();
     }
     else if (typeof arguments[0] == "string") {
       this.variantName = arguments[0];
       this.variantId = this.variantNames.indexOf(this.variantName);
+      this._updateCache();
     }
-
-    this.updateCache();
 
     if (!this._tracked) {
       this._executeExperiment.bind(this)();
